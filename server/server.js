@@ -22,8 +22,9 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => {
+    console.log("✅ Connected to MongoDB"); // Add this line
     app.listen(process.env.PORT || 5000, () => {
-      console.log("Server running on port 5000");
+      console.log("🚀 Server running on port 5000");
     });
   })
-  .catch((err) => console.error(err));
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
