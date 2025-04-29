@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { BsBell } from "react-icons/bs";
+import {PencilSquareIcon } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
   return (
@@ -34,8 +35,9 @@ const Navbar = () => {
         <BsBell className="text-xl text-gray-600 cursor-pointer" />
         <Link
           to="/create"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700"
+          className= "flex items-center gap-2 p-2 bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-700"
         >
+        <PencilSquareIcon className="h-5 w-5" />
           New Thread
         </Link>
       </div>

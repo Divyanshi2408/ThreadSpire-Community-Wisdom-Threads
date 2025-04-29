@@ -1,6 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import {
+    HomeIcon,
+    PencilSquareIcon,     
+    BookmarkSquareIcon,   
+    UserCircleIcon,       
+    TagIcon              
+  } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
   return (
@@ -25,8 +31,41 @@ const Sidebar = () => {
             }`
           }
         >
-          <InformationCircleIcon className="h-5 w-5" />
+          <PencilSquareIcon className="h-5 w-5" />
           CreateThread
+        </NavLink>
+        <NavLink
+          to="/collections"
+          className={({ isActive }) =>
+            `flex items-center gap-2 p-2 rounded hover:bg-blue-200 ${
+              isActive ? 'bg-blue-200' : ''
+            }`
+          }
+        >
+          <BookmarkSquareIcon className="h-5 w-5" />
+          Collections
+        </NavLink>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `flex items-center gap-2 p-2 rounded hover:bg-blue-200 ${
+              isActive ? 'bg-blue-200' : ''
+            }`
+          }
+        >
+          <UserCircleIcon className="h-5 w-5" />
+          Profile
+        </NavLink>
+        <NavLink
+          to="/tag"
+          className={({ isActive }) =>
+            `flex items-center gap-2 p-2 rounded hover:bg-blue-200 ${
+              isActive ? 'bg-blue-200' : ''
+            }`
+          }
+        >
+         <TagIcon className="h-5 w-5" />
+          Tags
         </NavLink>
         
       </nav>
