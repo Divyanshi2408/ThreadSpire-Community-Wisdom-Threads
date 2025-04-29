@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { createThread, getThreads } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 const CreateThread = ({ setThreads }) => {
   const [title, setTitle] = useState("");
   const [segments, setSegments] = useState([""]);
   const [tags, setTags] = useState("");
+  const navigate = useNavigate();
 
   const addSegment = () => setSegments([...segments, ""]);
 
@@ -15,17 +17,38 @@ const CreateThread = ({ setThreads }) => {
   };
 
   const handleSubmit = async () => {
-    await createThread({
-      title,
-      segments,
-      tags: tags.split(",")
-    });
-    setTitle("");
-    setTags("");
-    setSegments([""]);
-    const res = await getThreads();
-    setThreads(res.data);
+    try {
+      const formattedSegments = segments.map((s) => ({ content: s }));
+      await createThread({
+        title,
+        segments: formattedSegments,
+        tags: tags.split(",").map((t) => t.trim()),
+      });
+
+      setTitle("");
+      setTags("");
+      setSegments([""]);
+      const res = await getThreads();
+      setThreads(res.data);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to create thread:", error);
+      alert("Error creating thread. Please check console.");
+    }
   };
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return (
+      <div className="text-center mt-10 text-red-500">
+        Please{" "}
+        <a href="/login" className="text-blue-600 underline">
+          login
+        </a>{" "}
+        to create a thread.
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow mb-8">
