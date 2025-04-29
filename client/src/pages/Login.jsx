@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/api";
 
 export default function Login() {
@@ -46,11 +46,19 @@ export default function Login() {
         />
         <button
           type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
         >
           Login
         </button>
       </form>
+
+      {/* Register Link */}
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Don’t have an account?{" "}
+        <Link to="/register" className="text-blue-600 hover:underline">
+          Register here
+        </Link>
+      </p>
     </div>
   );
 }
