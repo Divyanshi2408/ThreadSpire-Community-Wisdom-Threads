@@ -1,3 +1,6 @@
+// ✅ UPDATED BACKEND TO SUPPORT ADDING THREAD TO COLLECTION
+
+// controllers/collectionController.js
 const Collection = require("../models/Collection");
 
 const createCollection = async (req, res) => {
@@ -16,4 +19,28 @@ const getCollections = async (req, res) => {
   res.json(collections);
 };
 
-module.exports = { createCollection, getCollections };
+// ✅ Add thread to a specific collection
+const addThreadToCollection = async (req, res) => {
+  const { collectionId } = req.params;
+  const { threadId } = req.body;
+
+  try {
+    const collection = await Collection.findOne({
+      _id: collectionId,
+      user: req.user._id
+    });
+
+    if (!collection) return res.status(404).json({ message: "Collection not found" });
+
+    if (!collection.threads.includes(threadId)) {
+      collection.threads.push(threadId);
+      await collection.save();
+    }
+
+    res.json({ message: "Thread added to collection", collection });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding thread to collection" });
+  }
+};
+
+module.exports = { createCollection, getCollections, addThreadToCollection };

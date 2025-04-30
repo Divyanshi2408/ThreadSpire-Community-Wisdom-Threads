@@ -19,6 +19,18 @@ const getThreads = async (req, res) => {
     .limit(50);
   res.json(threads);
 };
+const getThreadById = async (req, res) => {
+  try {
+    const thread = await Thread.findById(req.params.id).populate("author", "email");
+    if (!thread) {
+      return res.status(404).json({ message: "Thread not found" });
+    }
+    res.json(thread);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 const reactThread = async (req, res) => {
   const { id } = req.params;
@@ -43,4 +55,4 @@ const forkThread = async (req, res) => {
   res.status(201).json(forked);
 };
 
-module.exports = { createThread, getThreads, reactThread, forkThread };
+module.exports = { createThread, getThreads,getThreadById, reactThread, forkThread };
