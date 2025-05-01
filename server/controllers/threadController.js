@@ -34,13 +34,56 @@ const getThreadById = async (req, res) => {
 
 const reactThread = async (req, res) => {
   const { id } = req.params;
-  const { type } = req.body; // brain, fire, etc.
-  const thread = await Thread.findById(id);
-  if (!thread) return res.status(404).json({ message: "Thread not found" });
-  thread.reactions[type] += 1;
-  await thread.save();
-  res.json(thread);
+  const { type } = req.body;
+
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Unauthorized: No user" });
+  }
+
+  const userId = req.user._id.toString();
+
+  const allowedReactions = ["brain", "fire", "clap", "heart", "rocket"];
+  if (typeof type !== "string" || !allowedReactions.includes(type)) {
+    return res.status(400).json({ message: "Invalid or missing reaction type" });
+  }
+
+  try {
+    const thread = await Thread.findById(id);
+    if (!thread) return res.status(404).json({ message: "Thread not found" });
+
+    const previousReaction = thread.reactedUsers?.get(userId);
+
+    // User clicked same reaction → remove it
+    if (previousReaction === type) {
+      thread.reactions.set(type, Math.max((thread.reactions.get(type) || 1) - 1, 0));
+      thread.reactedUsers.delete(userId);
+    } else {
+      // Remove old if exists
+      if (previousReaction) {
+        thread.reactions.set(
+          previousReaction,
+          Math.max((thread.reactions.get(previousReaction) || 1) - 1, 0)
+        );
+      }
+      // Add new
+      thread.reactions.set(type, (thread.reactions.get(type) || 0) + 1);
+      thread.reactedUsers.set(userId, type);
+    }
+
+    await thread.save();
+
+    res.status(200).json({
+      message: "Reaction updated",
+      reactions: Object.fromEntries(thread.reactions),
+      userReaction: thread.reactedUsers.get(userId) || null,
+    });
+  } catch (error) {
+    console.error("Reaction error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
+
+
 
 const forkThread = async (req, res) => {
   const original = await Thread.findById(req.params.id);

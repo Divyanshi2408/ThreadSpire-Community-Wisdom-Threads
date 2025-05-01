@@ -30,14 +30,8 @@ export const getCollections = () =>
 export const createCollection = (data) =>
   axios.post(`${API_BASE}/collections`, data, getAuthHeaders());
 
-export const updateCollection = (id, data) =>
-  axios.put(`${API_BASE}/collections/${id}`, data, getAuthHeaders());
-
-export const deleteCollection = (id) =>
-  axios.delete(`${API_BASE}/collections/${id}`, getAuthHeaders());
-
 export const addThreadToCollection = (collectionId, threadId) =>
   axios.post(`${API_BASE}/collections/${collectionId}/add-thread`, { threadId }, getAuthHeaders());
 
-
-
+export const reactToThread = (threadId, type) =>
+  axios.post(`${API_BASE}/threads/${threadId}/react`, { type }, getAuthHeaders());

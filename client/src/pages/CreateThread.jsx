@@ -16,6 +16,31 @@ const CreateThread = ({ setThreads }) => {
     setSegments(newSegs);
   };
 
+  if (typeof setThreads === "function") {
+    setThreads(res.data);
+  }
+
+  
+  // const handleSubmit = async () => {
+  //   try {
+  //     const formattedSegments = segments.map((s) => ({ content: s }));
+  //     await createThread({
+  //       title,
+  //       segments: formattedSegments,
+  //       tags: tags.split(",").map((t) => t.trim()),
+  //     });
+
+  //     setTitle("");
+  //     setTags("");
+  //     setSegments([""]);
+  //     const res = await getThreads();
+  //     setThreads(res.data);
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Failed to create thread:", error);
+  //     alert("Error creating thread. Please check console.");
+  //   }
+  // };
   const handleSubmit = async () => {
     try {
       const formattedSegments = segments.map((s) => ({ content: s }));
@@ -24,18 +49,25 @@ const CreateThread = ({ setThreads }) => {
         segments: formattedSegments,
         tags: tags.split(",").map((t) => t.trim()),
       });
-
+  
       setTitle("");
       setTags("");
       setSegments([""]);
+  
       const res = await getThreads();
-      setThreads(res.data);
+      
+      // Only call setThreads if it exists
+      if (typeof setThreads === "function") {
+        setThreads(res.data);
+      }
+  
       navigate("/");
     } catch (error) {
       console.error("Failed to create thread:", error);
       alert("Error creating thread. Please check console.");
     }
   };
+  
 
   const token = localStorage.getItem("token");
   if (!token) {
