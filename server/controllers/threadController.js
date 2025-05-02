@@ -34,7 +34,9 @@ const getThreadById = async (req, res) => {
 
 const reactThread = async (req, res) => {
   const { id } = req.params;
-  const { type } = req.body;
+  const { reactionType } = req.body; 
+const type = reactionType;
+
 
   if (!req.user || !req.user._id) {
     return res.status(401).json({ message: "Unauthorized: No user" });

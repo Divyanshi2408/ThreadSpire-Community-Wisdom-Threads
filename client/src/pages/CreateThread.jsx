@@ -41,6 +41,7 @@ const CreateThread = ({ setThreads }) => {
   //     alert("Error creating thread. Please check console.");
   //   }
   // };
+  
   const handleSubmit = async () => {
     try {
       const formattedSegments = segments.map((s) => ({ content: s }));

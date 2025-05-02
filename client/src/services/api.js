@@ -33,5 +33,13 @@ export const createCollection = (data) =>
 export const addThreadToCollection = (collectionId, threadId) =>
   axios.post(`${API_BASE}/collections/${collectionId}/add-thread`, { threadId }, getAuthHeaders());
 
-export const reactToThread = (threadId, type) =>
-  axios.post(`${API_BASE}/threads/${threadId}/react`, { type }, getAuthHeaders());
+export const reactToThread = (threadId, reactionType) => {
+  return axios.post(
+    `${API_BASE}/threads/${threadId}/react`,
+    { reactionType },
+    getAuthHeaders()
+  );
+};
+
+
+
