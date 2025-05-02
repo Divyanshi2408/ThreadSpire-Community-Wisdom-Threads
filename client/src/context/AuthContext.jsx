@@ -7,14 +7,21 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    console.log("🟢 [AuthProvider] Local user:", storedUser);
+  }, []);
+  
 
   useEffect(() => {
+    console.log("🔁 [AuthProvider] Updating localStorage with user:", user);
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
     }
   }, [user]);
+  
 
   const logout = () => {
     setUser(null);

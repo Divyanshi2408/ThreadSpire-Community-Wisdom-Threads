@@ -13,18 +13,39 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError("");
+  //   try {
+  //     const res = await loginUser(form); // this should return user + token
+  //     localStorage.setItem("token", res.data.token); // optional if you're using JWT auth
+  //     setUser(res.data.user);
+  //     localStorage.setItem("user", JSON.stringify(res.data.user));
+  //     navigate("/");
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || "Login failed");
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+  
     try {
-      const res = await loginUser(form); // this should return user + token
-      localStorage.setItem("token", res.data.token); // optional if you're using JWT auth
-      setUser(res.data.user); // ✅ sets user in context
+      const res = await loginUser(form);
+      console.log("📦 API response:", res.data);
+  
+      localStorage.setItem("token", res.data.token);
+  
+      // ✅ Set user directly (not res.data.user)
+      setUser({ _id: res.data._id, email: res.data.email });
+  
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
   };
+  
+  
 
   return (
     <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow rounded">
