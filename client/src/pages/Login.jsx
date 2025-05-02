@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/api";
+import { useAuth } from "../context/AuthContext"; // ✅ import useAuth
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useAuth(); // ✅ get setUser from context
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,8 +17,9 @@ export default function Login() {
     e.preventDefault();
     setError("");
     try {
-      const res = await loginUser(form);
-      localStorage.setItem("token", res.data.token);
+      const res = await loginUser(form); // this should return user + token
+      localStorage.setItem("token", res.data.token); // optional if you're using JWT auth
+      setUser(res.data.user); // ✅ sets user in context
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -52,7 +55,6 @@ export default function Login() {
         </button>
       </form>
 
-      {/* Register Link */}
       <p className="mt-4 text-center text-sm text-gray-600">
         Don’t have an account?{" "}
         <Link to="/register" className="text-blue-600 hover:underline">
