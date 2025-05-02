@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/api";
 
 export default function Register() {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "" }); // Change "username" to "name"
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function Register() {
     e.preventDefault();
     setError("");
     try {
-      await registerUser(form);
+      await registerUser(form);  // Ensure the form includes "name", "email", and "password"
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
@@ -29,8 +29,8 @@ export default function Register() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          name="username"
-          placeholder="Username"
+          name="name"  // Use "name" instead of "username"
+          placeholder="Name"
           className="w-full border p-2 rounded"
           onChange={handleChange}
           required

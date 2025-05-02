@@ -31,19 +31,24 @@ export default function Login() {
     setError("");
   
     try {
-      const res = await loginUser(form);
+      const res = await loginUser(form);  // Get the response including name
       console.log("📦 API response:", res.data);
   
+      // Set user in context (including name)
+      setUser({
+        _id: res.data._id,
+        name: res.data.name,  // Ensure name is included
+        email: res.data.email
+      });
+  
       localStorage.setItem("token", res.data.token);
-  
-      // ✅ Set user directly (not res.data.user)
-      setUser({ _id: res.data._id, email: res.data.email });
-  
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
   };
+  
+  
   
   
 
