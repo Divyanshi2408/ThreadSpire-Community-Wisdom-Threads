@@ -13,26 +13,13 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
-  //   try {
-  //     const res = await loginUser(form); // this should return user + token
-  //     localStorage.setItem("token", res.data.token); // optional if you're using JWT auth
-  //     setUser(res.data.user);
-  //     localStorage.setItem("user", JSON.stringify(res.data.user));
-  //     navigate("/");
-  //   } catch (err) {
-  //     setError(err.response?.data?.message || "Login failed");
-  //   }
-  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
   
     try {
       const res = await loginUser(form);  // Get the response including name
-      console.log("📦 API response:", res.data);
   
       // Set user in context (including name)
       setUser({

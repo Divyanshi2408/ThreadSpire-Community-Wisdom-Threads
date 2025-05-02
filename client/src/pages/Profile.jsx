@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
   const { user, logout } = useAuth(); // Make sure `logout` is provided in context
-  console.log("Current user from context:", user);
+ 
 
 
   if (!user) {
