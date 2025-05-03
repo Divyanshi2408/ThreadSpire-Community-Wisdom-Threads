@@ -44,4 +44,6 @@ export const reactToThread = (threadId, reactionType) => {
 export const getMyThreads = () =>
   axios.get(`${API_BASE}/threads/mine`, getAuthHeaders());
 
+export const getTrendingThreads = () =>
+  axios.get(`${API_BASE}/threads/trending`, getAuthHeaders());
 

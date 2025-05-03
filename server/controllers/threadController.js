@@ -110,4 +110,42 @@ const forkThread = async (req, res) => {
   res.status(201).json(forked);
 };
 
-module.exports = { createThread, getThreads, getMyThreads, reactThread, forkThread };
+const getTrendingThreads = async (req, res) => {
+  try {
+    const threads = await Thread.find({}) // Fetch all threads (You can filter to fetch only published threads)
+      .populate("author", "name email");
+
+    // Calculate the trending score for each thread
+    const scoredThreads = threads.map((thread) => {
+      // Calculate how many hours since the thread was created
+      const hoursSincePost = (Date.now() - new Date(thread.createdAt)) / 3600000;
+
+      // Get the count of reactions, bookmarks, and forks
+      const reactionsCount = Array.from(thread.reactions?.values() || []).reduce((a, b) => a + b, 0);
+      const bookmarksCount = thread.bookmarks?.length || 0;
+      const forksCount = thread.forkedFrom ? 1 : 0;
+
+      // Calculate the trending score
+      const trendingScore =
+        reactionsCount * 1.5 + // Weight reactions more
+        bookmarksCount * 2 + // Weight bookmarks more
+        forksCount * 2.5 + // Forked threads get extra weight
+        -hoursSincePost * 0.1; // Penalize old threads
+
+      return { thread, trendingScore };
+    });
+
+    // Sort threads by trending score in descending order
+    const sorted = scoredThreads.sort((a, b) => b.trendingScore - a.trendingScore);
+
+    // Send the top 10 trending threads as the response
+    res.status(200).json(sorted.slice(0, 10).map((item) => item.thread));
+  } catch (error) {
+    console.error("Error fetching trending threads:", error);
+    res.status(500).json({ message: "Failed to fetch trending threads", error });
+  }
+};
+
+
+
+module.exports = { createThread, getThreads, getMyThreads, reactThread, forkThread, getTrendingThreads };

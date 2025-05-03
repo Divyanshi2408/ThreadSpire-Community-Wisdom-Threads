@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import MyProfile from "./pages/MyProfile";
 import Tags from "./pages/Tags";
 import TrendingTopics from "./components/TrendingTopics";
+import TrendingThreadsPage from "./pages/TrendingThreadsPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/collections" element={<Collections />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/myprofile" element={<MyProfile />} />
+            <Route path="/trending" element={<TrendingThreadsPage />} />
             <Route path="/tag" element={<Tags />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
