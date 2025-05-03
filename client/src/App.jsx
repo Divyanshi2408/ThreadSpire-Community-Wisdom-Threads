@@ -12,38 +12,38 @@ import TrendingTopics from "./components/TrendingTopics";
 
 function App() {
   return (
-    <> 
-
-  <div className="flex flex-1">
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="flex min-h-screen ">
-      <Sidebar />
-      <main className="flex flex-1 p-4 gap-4">
-        {/* Main Content */}
-        <div className="w-full md:w-2/3">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreateThread />} />
-        <Route path="/collections" element={<Collections/>} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/tag" element={<Tags />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-      </div>
 
-        {/* Right Sidebar */}
-        <div className="hidden lg:block w-1/3 space-y-6 bg-gray-100  p-2">
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <div className="w-64 bg-gray-200 h-full overflow-hidden">
+          <Sidebar />
+        </div>
+
+        {/* Main Content Scrollable */}
+        <main className="flex-1 overflow-y-auto p-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/create" element={<CreateThread />} />
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/tag" element={<Tags />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+
+        {/* Right Sidebar (Fixed) */}
+        <div className="hidden lg:block w-80 bg-gray-100 p-2 h-full overflow-hidden">
           <Profile />
+          <br/>
           <TrendingTopics />
         </div>
-      </main>
+      </div>
     </div>
-    </div>
-</div>
-    </>
   );
 }
+
 
 export default App;

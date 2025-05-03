@@ -4,7 +4,7 @@ const topics = ['#ReactJS', '#MERN', '#WebDev', '#OpenAI', '#JavaScript'];
 
 const TrendingTopics = () => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
+    <div className="bg-white p-4 rounded-lg shadow h-full">
       <h2 className="text-lg font-semibold mb-2">Trending Topics</h2>
       <ul className="space-y-2">
         {topics.map((topic, index) => (

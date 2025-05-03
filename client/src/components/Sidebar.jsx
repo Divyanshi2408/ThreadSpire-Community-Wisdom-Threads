@@ -10,7 +10,7 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className="w-64  flex flex-col p-4 space-y-6 bg-gray-100">
+    <div className="w-64  flex flex-col p-4 space-y-6 h-full bg-gray-100">
       <nav className="flex flex-col gap-4">
         <NavLink
           to="/"

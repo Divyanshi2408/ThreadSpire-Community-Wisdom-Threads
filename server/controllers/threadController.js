@@ -2,19 +2,28 @@ const Thread = require("../models/Thread");
 
 const createThread = async (req, res) => {
   const { title, tags, segments } = req.body;
+  const { _id } = req.user;  
+
   const thread = new Thread({
     title,
     tags,
     segments,
-    author: req.user._id
+    author: _id,  
   });
-  const saved = await thread.save();
-  res.status(201).json(saved);
+
+  try {
+    const saved = await thread.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ message: "Error creating thread", error: err });
+  }
 };
+
+
 
 const getThreads = async (req, res) => {
   const threads = await Thread.find({})
-    .populate("author", "email")
+    .populate("author", "name email")
     .sort("-createdAt")
     .limit(50);
   res.json(threads);
