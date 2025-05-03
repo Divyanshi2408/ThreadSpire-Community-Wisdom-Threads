@@ -41,6 +41,18 @@ const getMyThreads = async (req, res) => {
   }
 };
 
+const getThreadsByTag = async (req, res) => {
+  try {
+    const { tagName } = req.params;
+
+    const threads = await Thread.find({ tags: tagName }).populate('author', 'name email');
+
+    res.status(200).json(threads);
+  } catch (error) {
+    console.error("Error fetching threads by tag:", error);
+    res.status(500).json({ message: "Failed to fetch threads for this tag" });
+  }
+};
 
 const reactThread = async (req, res) => {
   const { id } = req.params;
@@ -77,7 +89,7 @@ const type = reactionType;
           Math.max((thread.reactions.get(previousReaction) || 1) - 1, 0)
         );
       }
-      // Add new
+      
       thread.reactions.set(type, (thread.reactions.get(type) || 0) + 1);
       thread.reactedUsers.set(userId, type);
     }
@@ -112,10 +124,10 @@ const forkThread = async (req, res) => {
 
 const getTrendingThreads = async (req, res) => {
   try {
-    const threads = await Thread.find({}) // Fetch all threads (You can filter to fetch only published threads)
+    const threads = await Thread.find({}) 
       .populate("author", "name email");
 
-    // Calculate the trending score for each thread
+  
     const scoredThreads = threads.map((thread) => {
       // Calculate how many hours since the thread was created
       const hoursSincePost = (Date.now() - new Date(thread.createdAt)) / 3600000;
@@ -148,4 +160,4 @@ const getTrendingThreads = async (req, res) => {
 
 
 
-module.exports = { createThread, getThreads, getMyThreads, reactThread, forkThread, getTrendingThreads };
+module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, reactThread, forkThread, getTrendingThreads };

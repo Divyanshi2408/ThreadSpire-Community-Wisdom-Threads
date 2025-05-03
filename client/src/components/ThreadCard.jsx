@@ -47,9 +47,7 @@ const ThreadCard = ({ thread }) => {
 
   const handleReaction = async (reactionType) => {
     try {
-      
       const res = await reactToThread(thread._id, reactionType);
-      
       setReactions(res.data.reactions);
       setUserReaction(res.data.userReaction);
     } catch (err) {
@@ -82,6 +80,24 @@ const ThreadCard = ({ thread }) => {
         {thread.segments?.[0]?.content || "No content available."}
       </blockquote>
 
+      {/* Tags Display */}
+      <div className="mt-2">
+        {thread.tags && thread.tags.length > 0 && (
+          <div className="flex gap-2 mt-2">
+            {thread.tags.map((tag, index) => (
+              <Link
+  to={`/tags/${tag}`}
+  key={index}
+  className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-sm hover:underline"
+>
+  #{tag}
+</Link>
+
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Reaction Buttons */}
       <div className="mt-4 flex gap-3">
         {emojis.map((emoji) => (
@@ -94,7 +110,6 @@ const ThreadCard = ({ thread }) => {
           >
             {emoji.icon} {reactions?.[emoji.type] || 0}
           </button>
-          
         ))}
       </div>
 

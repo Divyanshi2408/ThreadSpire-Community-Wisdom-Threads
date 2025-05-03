@@ -85,6 +85,22 @@ const TrendingThreadCard = ({ thread, index }) => {
         {thread.segments?.[0]?.content || "No content available."}
       </blockquote>
 
+      <div className="mt-2">
+        {thread.tags && thread.tags.length > 0 && (
+          <div className="flex gap-2 mt-2">
+            {thread.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+
       {/* Reaction Buttons */}
       <div className="mt-4 flex gap-3">
         {emojis.map((emoji) => (

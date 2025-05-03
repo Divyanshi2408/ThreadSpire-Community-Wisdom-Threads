@@ -32,7 +32,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/trending" element={<TrendingThreadsPage />} />
-            <Route path="/tag" element={<Tags />} />
+            <Route path="/tags/:tagName" element={<Tags />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
           </Routes>
