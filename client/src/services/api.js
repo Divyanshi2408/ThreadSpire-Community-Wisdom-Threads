@@ -49,3 +49,6 @@ export const getTrendingThreads = () =>
 
 export const getThreadsByTag = (tagName) =>
   axios.get(`${API_BASE}/threads/tags/${tagName}`, getAuthHeaders());
+
+export const getAllTagsWithCounts = () =>
+  axios.get(`${API_BASE}/threads/tags`, getAuthHeaders());

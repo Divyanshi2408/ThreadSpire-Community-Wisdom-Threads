@@ -11,6 +11,7 @@ import MyProfile from "./pages/MyProfile";
 import Tags from "./pages/Tags";
 import TrendingTopics from "./components/TrendingTopics";
 import TrendingThreadsPage from "./pages/TrendingThreadsPage";
+import TagsLandingPage from "./pages/TagsLandingPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/trending" element={<TrendingThreadsPage />} />
             <Route path="/tags/:tagName" element={<Tags />} />
+            <Route path="/tag" element={<TagsLandingPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
           </Routes>

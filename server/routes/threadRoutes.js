@@ -5,6 +5,7 @@ const {
   getThreads,
   getMyThreads,
   getThreadsByTag,
+  getAllTagsWithCount,
   reactThread,
   forkThread,
   getTrendingThreads,
@@ -14,6 +15,7 @@ const { protect } = require("../middlewares/authMiddleware");
 router.route("/").get(getThreads).post(protect, createThread);
 router.route("/mine").get(protect, getMyThreads);
 router.route("/tags/:tagName").get(protect, getThreadsByTag);
+router.route("/tags").get(protect, getAllTagsWithCount);
 router.route("/:id/react").post(protect, reactThread);
 router.route("/:id/fork").post(protect, forkThread);
 router.route("/trending").get(protect, getTrendingThreads);

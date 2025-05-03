@@ -54,6 +54,22 @@ const getThreadsByTag = async (req, res) => {
   }
 };
 
+const getAllTagsWithCount = async (req, res) => {
+  try {
+    const tagsWithCounts = await Thread.aggregate([
+      { $unwind: "$tags" },
+      { $group: { _id: "$tags", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $project: { tag: "$_id", count: 1, _id: 0 } }
+    ]);
+
+    res.json(tagsWithCounts);
+  } catch (error) {
+    console.error("Error fetching tags with count:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 const reactThread = async (req, res) => {
   const { id } = req.params;
   const { reactionType } = req.body; 
@@ -160,4 +176,4 @@ const getTrendingThreads = async (req, res) => {
 
 
 
-module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, reactThread, forkThread, getTrendingThreads };
+module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads };
