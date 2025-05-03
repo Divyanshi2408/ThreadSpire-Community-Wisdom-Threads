@@ -46,7 +46,7 @@ const Sidebar = () => {
           Collections
         </NavLink>
         <NavLink
-          to="/profile"
+          to="/MyProfile"
           className={({ isActive }) =>
             `flex items-center gap-2 p-2 rounded hover:bg-blue-200 ${
               isActive ? 'bg-blue-200' : ''

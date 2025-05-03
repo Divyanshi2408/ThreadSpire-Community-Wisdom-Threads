@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Collections from "./pages/Collections";
 import Profile from "./pages/Profile";
+import MyProfile from "./pages/MyProfile";
 import Tags from "./pages/Tags";
 import TrendingTopics from "./components/TrendingTopics";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/create" element={<CreateThread />} />
             <Route path="/collections" element={<Collections />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/myprofile" element={<MyProfile />} />
             <Route path="/tag" element={<Tags />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
