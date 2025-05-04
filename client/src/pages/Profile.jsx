@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -21,9 +22,9 @@ const Profile = () => {
       </div>
     );
   }
-
+// [#EDE7DD]
   return (
-    <div className="bg-white p-6 rounded-xl shadow border border-[#EDE7DD] text-[#2C1D0E]">
+    <div className="bg-white p-6 rounded-xl shadow border border-[#E5C07B] text-[#2C1D0E]">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Your Profile</h2>
         <button
@@ -40,7 +41,7 @@ const Profile = () => {
         </div>
         <div>
           <p className="font-medium">{user.name || 'Anonymous'}</p>
-          <p className="text-sm text-[#5E4B3C]">View your profile</p>
+          <Link to="/myprofile" className="text-sm text-[#5E4B3C]">View your profile</Link>
         </div>
       </div>
     </div>

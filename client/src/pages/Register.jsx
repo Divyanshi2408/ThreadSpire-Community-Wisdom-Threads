@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/api";
 
 export default function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" }); // Change "username" to "name"
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ export default function Register() {
     e.preventDefault();
     setError("");
     try {
-      await registerUser(form);  // Ensure the form includes "name", "email", and "password"
+      await registerUser(form);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
@@ -23,49 +23,50 @@ export default function Register() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4">Register</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="name"  // Use "name" instead of "username"
-          placeholder="Name"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
-        >
-          Register
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5] px-4">
+      <div className="max-w-md w-full p-6 bg-white rounded-2xl shadow-md">
+        <h2 className="text-2xl font-bold text-[#2C1D0E] mb-4 text-center">Register</h2>
+        {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            className="w-full border border-[#E0DBD3] p-2 rounded text-[#2C1D0E] bg-[#FAF8F5]"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="w-full border border-[#E0DBD3] p-2 rounded text-[#2C1D0E] bg-[#FAF8F5]"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="w-full border border-[#E0DBD3] p-2 rounded text-[#2C1D0E] bg-[#FAF8F5]"
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-[#7F5539] text-white py-2 rounded hover:bg-[#5E4B3C] transition"
+          >
+            Register
+          </button>
+        </form>
 
-      {/* Login Link */}
-      <p className="mt-4 text-center text-sm text-gray-600">
-        Already have an account?{" "}
-        <Link to="/login" className="text-green-600 hover:underline">
-          Login here
-        </Link>
-      </p>
+        <p className="mt-4 text-center text-sm text-[#5E4B3C]">
+          Already have an account?{" "}
+          <Link to="/login" className="text-[#7F5539] hover:underline">
+            Login here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

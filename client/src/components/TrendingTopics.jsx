@@ -20,7 +20,7 @@ const TrendingTopics = () => {
   }, []);
 
   return (
-    <div className="bg-white p-4  rounded-2xl shadow border border-[#EDE7DD] h-full">
+    <div className="bg-white p-4  rounded-2xl shadow border border-[#E5C07B] h-full">
       <h2 className="text-lg font-semibold mb-3 text-[#2C1D0E]">Trending Tags</h2>
       <ul className="space-y-2">
         {tags.map((tag, index) => (

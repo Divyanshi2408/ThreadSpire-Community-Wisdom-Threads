@@ -196,7 +196,7 @@ const ThreadCard = ({ thread }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-[#EDE7DD] mb-6">
+    <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E5C07B] mb-6">
       <h2 className="text-xl font-bold mb-2 capitalize text-[#2C1D0E]">
         {thread.title}
       </h2>

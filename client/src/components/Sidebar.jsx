@@ -7,7 +7,8 @@ import {
   UserCircleIcon,
   TagIcon,
   Bars3Icon,
-  XMarkIcon
+  XMarkIcon,
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
@@ -20,13 +21,14 @@ const Sidebar = () => {
     { to: '/create', icon: <PencilSquareIcon className="h-6 w-6 text-[#2C1D0E]" />, label: 'Create Thread' },
     { to: '/collections', icon: <BookmarkSquareIcon className="h-6 w-6 text-[#2C1D0E]" />, label: 'Collections' },
     { to: '/MyProfile', icon: <UserCircleIcon className="h-6 w-6 text-[#2C1D0E]" />, label: 'Profile' },
+    { to: '/trending', icon: <ArrowTrendingUpIcon className="h-6 w-6 text-[#2C1D0E]" />, label: 'Trending' },
     { to: '/tag', icon: <TagIcon className="h-6 w-6 text-[#2C1D0E]" />, label: 'Tags' },
   ];
 
   return (
     <>
       {/* Toggle button visible on small screens */}
-      <div className="md:hidden p-2">
+      <div className="md:hidden p-2 ">
         <button
           onClick={toggleSidebar}
           className="text-[#7F5539] focus:outline-none"
@@ -41,7 +43,7 @@ const Sidebar = () => {
           isOpen ? 'block' : 'hidden'
         } md:block w-20 md:w-64 h-full bg-[#FFFDF9] p-4 space-y-6 transition-all duration-300`}
       >
-        <nav className="flex flex-col gap-4">
+        <nav className="flex flex-col gap-4 ">
           {navItems.map((item, index) => (
             <NavLink
               key={index}
