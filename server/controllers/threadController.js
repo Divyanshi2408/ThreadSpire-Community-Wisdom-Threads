@@ -19,11 +19,10 @@ const createThread = async (req, res) => {
   }
 };
 
-
-
 const getThreads = async (req, res) => {
   const threads = await Thread.find({})
     .populate("author", "name email")
+    .populate("forkedFrom", "title")
     .sort("-createdAt")
     .limit(50);
   res.json(threads);
@@ -33,6 +32,7 @@ const getMyThreads = async (req, res) => {
   try {
     const myThreads = await Thread.find({ author: req.user._id })
       .populate("author", "name email")
+      .populate("forkedFrom", "title")
       .sort("-createdAt");
 
     res.status(200).json(myThreads);
@@ -41,11 +41,27 @@ const getMyThreads = async (req, res) => {
   }
 };
 
+const getThreadById = async (req, res) => {
+  try {
+    const thread = await Thread.findById(req.params.id)
+      .populate("author", "name email")
+      .populate("forkedFrom", "title");
+
+    if (!thread) return res.status(404).json({ message: "Thread not found" });
+
+    res.status(200).json(thread);
+  } catch (error) {
+    console.error("Error fetching thread by ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 const getThreadsByTag = async (req, res) => {
   try {
     const { tagName } = req.params;
 
-    const threads = await Thread.find({ tags: tagName }).populate('author', 'name email');
+    const threads = await Thread.find({ tags: tagName }).populate('author', 'name email').populate("forkedFrom", "title");;
 
     res.status(200).json(threads);
   } catch (error) {
@@ -125,24 +141,52 @@ const type = reactionType;
 
 
 
+// const forkThread = async (req, res) => {
+//   const original = await Thread.findById(req.params.id);
+//   if (!original) return res.status(404).json({ message: "Thread not found" });
+//   const forked = await Thread.create({
+//     title: original.title,
+//     tags: original.tags,
+//     segments: original.segments,
+//     author: req.user._id,
+//     forkedFrom: original._id
+//   });
+//   res.status(201).json(forked);
+// };
+
+// controllers/threadController.js
+
 const forkThread = async (req, res) => {
-  const original = await Thread.findById(req.params.id);
-  if (!original) return res.status(404).json({ message: "Thread not found" });
-  const forked = await Thread.create({
-    title: original.title,
-    tags: original.tags,
-    segments: original.segments,
-    author: req.user._id,
-    forkedFrom: original._id
-  });
-  res.status(201).json(forked);
+  try {
+    const original = await Thread.findById(req.params.id);
+    
+    if (!original) return res.status(404).json({ error: "Original thread not found" });
+
+    const forked = await Thread.create({
+      title: original.title,
+      segments: original.segments,
+      tags: original.tags,
+      author: req.user._id,
+      forkedFrom: original._id,
+    });
+    
+    const populatedForked = await Thread.findById(forked._id)
+      .populate("author", "name email")
+      .populate("forkedFrom", "title"); // 👈 Add this
+    
+    res.status(201).json(populatedForked);
+    
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
+
 
 const getTrendingThreads = async (req, res) => {
   try {
     const threads = await Thread.find({}) 
-      .populate("author", "name email");
-
+      .populate("author", "name email")
+      .populate("forkedFrom", "title");
   
     const scoredThreads = threads.map((thread) => {
       // Calculate how many hours since the thread was created
@@ -173,6 +217,8 @@ const getTrendingThreads = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch trending threads", error });
   }
 };
+
+
 
 // Update a thread
 const updateThread = async (req, res) => {
@@ -221,4 +267,4 @@ const deleteThread = async (req, res) => {
 };
 
 
-module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread };
+module.exports = { createThread, getThreads, getMyThreads,getThreadById , getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread };

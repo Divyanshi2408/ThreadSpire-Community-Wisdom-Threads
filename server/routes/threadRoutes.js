@@ -4,6 +4,7 @@ const {
   createThread,
   getThreads,
   getMyThreads,
+  getThreadById,
   getThreadsByTag,
   getAllTagsWithCount,
   reactThread,
@@ -23,5 +24,6 @@ router.route("/:id/fork").post(protect, forkThread);
 router.route("/trending").get(protect, getTrendingThreads);
 router.route("/:id").put(protect, updateThread);
 router.route("/:id").delete(protect, deleteThread);
+router.route("/:id").get(protect, getThreadById);
 
 module.exports = router;

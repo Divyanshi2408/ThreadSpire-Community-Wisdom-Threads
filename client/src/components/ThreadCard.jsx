@@ -7,6 +7,7 @@ import {
   reactToThread,
   deleteThread,
   updateThread,
+  forkThread,
 } from "../services/api";
 
 const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
@@ -26,6 +27,8 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
     { type: "rocket", icon: "🚀" },
     { type: "clap", icon: "👏" },
   ];
+
+  
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -91,37 +94,47 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
     }
   };
 
+  const handleFork = async () => {
+    try {
+      const res = await forkThread(thread._id);
+      alert("Thread forked successfully!");
+      // You could optionally redirect to the new thread here
+    } catch (err) {
+      console.error("Fork failed:", err.response?.data || err.message);
+      alert("Failed to fork thread.");
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E5C07B] mb-6">
       {isEditing ? (
         <>
-        <input
-          type="text"
-          value={editedTitle}
-          onChange={(e) => setEditedTitle(e.target.value)}
-          className="w-full mb-2 border border-[#A7C957] px-2 py-1 rounded bg-white text-[#2C1D0E]"
-        />
-        <textarea
-          rows={3}
-          value={editedSegment}
-          onChange={(e) => setEditedSegment(e.target.value)}
-          className="w-full border border-[#A7C957] px-2 py-1 rounded mb-3 bg-white text-[#2C1D0E]"
-        />
-        <div className="flex gap-3">
-          <button
-            onClick={handleSave}
-            className="text-sm bg-[#7F5539] text-white px-3 py-1 rounded hover:opacity-90 transition"
-          >
-            Save
-          </button>
-          <button
-            onClick={() => setIsEditing(false)}
-            className="text-sm text-[#5E4B3C] hover:text-[#2C1D0E] transition"
-          >
-            Cancel
-          </button>
-        </div>
-
+          <input
+            type="text"
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            className="w-full mb-2 border border-[#A7C957] px-2 py-1 rounded bg-white text-[#2C1D0E]"
+          />
+          <textarea
+            rows={3}
+            value={editedSegment}
+            onChange={(e) => setEditedSegment(e.target.value)}
+            className="w-full border border-[#A7C957] px-2 py-1 rounded mb-3 bg-white text-[#2C1D0E]"
+          />
+          <div className="flex gap-3">
+            <button
+              onClick={handleSave}
+              className="text-sm bg-[#7F5539] text-white px-3 py-1 rounded hover:opacity-90 transition"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => setIsEditing(false)}
+              className="text-sm text-[#5E4B3C] hover:text-[#2C1D0E] transition"
+            >
+              Cancel
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -141,9 +154,22 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
               </p>
             </div>
           </div>
-          <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
+          {/* <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
             {thread.segments?.[0]?.content || "No content available."}
-          </blockquote>
+          </blockquote> */}
+          <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
+  {thread.segments?.[0]?.content || "No content available."}
+</blockquote>
+
+{thread.forkedFrom && (
+  <div className="mt-2 text-sm text-[#5E4B3C] italic">
+    🔄 Forked from:{" "}
+    <Link to={`/threads/${thread.forkedFrom._id}`} className="underline text-[#7F5539]">
+      {thread.forkedFrom.title || "Original Thread"}
+    </Link>
+  </div>
+)}
+
         </>
       )}
 
@@ -162,7 +188,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
         </div>
       )}
 
-      {/* Reactions */}
+      {/* Reactions + Fork */}
       {!isEditing && (
         <div className="mt-4 flex gap-3">
           {emojis.map((emoji) => (
@@ -176,6 +202,14 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
               {emoji.icon} {reactions?.[emoji.type] || 0}
             </button>
           ))}
+
+          {/* Remix / Fork Button */}
+          <button
+            onClick={handleFork}
+            className="ml-auto text-sm bg-[#7F5539] text-white px-3 py-1 rounded hover:bg-[#5E4B3C] transition"
+          >
+            Remix
+          </button>
         </div>
       )}
 
@@ -217,7 +251,6 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
           </button>
         </div>
       )}
-
     </div>
   );
 };

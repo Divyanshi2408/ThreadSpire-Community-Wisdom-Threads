@@ -58,3 +58,9 @@ export const updateThread = (threadId, updatedData) =>
 
 export const deleteThread = (threadId) =>
   axios.delete(`${API_BASE}/threads/${threadId}`, getAuthHeaders());
+
+export const forkThread = (threadId) =>
+  axios.post(`${API_BASE}/threads/${threadId}/fork`, {}, getAuthHeaders());
+
+export const getThreadById = (threadId) =>
+  axios.get(`${API_BASE}/threads/${threadId}`, getAuthHeaders());
