@@ -9,6 +9,8 @@ const {
   reactThread,
   forkThread,
   getTrendingThreads,
+  updateThread,
+  deleteThread,
 } = require("../controllers/threadController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -19,5 +21,7 @@ router.route("/tags").get(protect, getAllTagsWithCount);
 router.route("/:id/react").post(protect, reactThread);
 router.route("/:id/fork").post(protect, forkThread);
 router.route("/trending").get(protect, getTrendingThreads);
+router.route("/:id").put(protect, updateThread);
+router.route("/:id").delete(protect, deleteThread);
 
 module.exports = router;

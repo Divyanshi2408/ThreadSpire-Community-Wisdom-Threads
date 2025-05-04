@@ -61,15 +61,23 @@ const MyProfile = () => {
       </div>
 
       <h3 className="text-md font-semibold mb-3">Your Threads:</h3>
-      {myThreads.length === 0 ? (
-        <p className="text-sm text-[#5E4B3C]">
-          You haven’t posted any threads yet.
-        </p>
-      ) : (
-        myThreads.map((thread) => (
-          <ThreadCard key={thread._id} thread={thread} isProfile />
-        ))
-      )}
+      {myThreads.map((thread) => (
+        <ThreadCard
+          key={thread._id}
+          thread={thread}
+          currentUser={user}
+          onThreadUpdate={(deletedId, updatedThread) => {
+            if (deletedId) {
+              setMyThreads((prev) => prev.filter((t) => t._id !== deletedId));
+            } else if (updatedThread) {
+              setMyThreads((prev) =>
+                prev.map((t) => (t._id === updatedThread._id ? updatedThread : t))
+              );
+            }
+          }}
+        />
+))}
+
     </div>
   );
 };

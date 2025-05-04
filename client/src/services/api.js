@@ -52,3 +52,9 @@ export const getThreadsByTag = (tagName) =>
 
 export const getAllTagsWithCounts = () =>
   axios.get(`${API_BASE}/threads/tags`, getAuthHeaders());
+
+export const updateThread = (threadId, updatedData) =>
+  axios.put(`${API_BASE}/threads/${threadId}`, updatedData, getAuthHeaders());
+
+export const deleteThread = (threadId) =>
+  axios.delete(`${API_BASE}/threads/${threadId}`, getAuthHeaders());

@@ -174,6 +174,51 @@ const getTrendingThreads = async (req, res) => {
   }
 };
 
+// Update a thread
+const updateThread = async (req, res) => {
+  const { id } = req.params;
+  const { title, tags, segments } = req.body;
+
+  try {
+    const thread = await Thread.findById(id);
+
+    if (!thread) return res.status(404).json({ message: "Thread not found" });
+    if (thread.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Unauthorized to update this thread" });
+    }
+
+    // Update fields
+    thread.title = title || thread.title;
+    thread.tags = tags || thread.tags;
+    thread.segments = segments || thread.segments;
+
+    const updated = await thread.save();
+    res.status(200).json(updated);
+  } catch (error) {
+    console.error("Error updating thread:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Delete a thread
+const deleteThread = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const thread = await Thread.findById(id);
+
+    if (!thread) return res.status(404).json({ message: "Thread not found" });
+    if (thread.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Unauthorized to delete this thread" });
+    }
+
+    await thread.deleteOne();
+    res.status(200).json({ message: "Thread deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting thread:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 
-module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads };
+module.exports = { createThread, getThreads, getMyThreads,getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread };
