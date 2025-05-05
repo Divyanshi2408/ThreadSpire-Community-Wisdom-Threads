@@ -157,18 +157,18 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
           {/* <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
             {thread.segments?.[0]?.content || "No content available."}
           </blockquote> */}
-          <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
-  {thread.segments?.[0]?.content || "No content available."}
-</blockquote>
+                  <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
+          {thread.segments?.[0]?.content || "No content available."}
+        </blockquote>
 
-{thread.forkedFrom && (
-  <div className="mt-2 text-sm text-[#5E4B3C] italic">
-    🔄 Forked from:{" "}
-    <Link to={`/threads/${thread.forkedFrom._id}`} className="underline text-[#7F5539]">
-      {thread.forkedFrom.title || "Original Thread"}
-    </Link>
-  </div>
-)}
+        {thread.forkedFrom && (
+          <div className="mt-2 text-sm text-[#5E4B3C] italic">
+            Forked from:{" "}
+            <Link to={`/threads/${thread.forkedFrom._id}`} className="underline text-[#7F5539]">
+              {thread.forkedFrom.title || "Original Thread"}
+            </Link>
+          </div>
+        )}
 
         </>
       )}

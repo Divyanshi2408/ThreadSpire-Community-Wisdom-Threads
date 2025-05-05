@@ -56,7 +56,6 @@ const getThreadById = async (req, res) => {
   }
 };
 
-
 const getThreadsByTag = async (req, res) => {
   try {
     const { tagName } = req.params;
@@ -139,23 +138,6 @@ const type = reactionType;
   }
 };
 
-
-
-// const forkThread = async (req, res) => {
-//   const original = await Thread.findById(req.params.id);
-//   if (!original) return res.status(404).json({ message: "Thread not found" });
-//   const forked = await Thread.create({
-//     title: original.title,
-//     tags: original.tags,
-//     segments: original.segments,
-//     author: req.user._id,
-//     forkedFrom: original._id
-//   });
-//   res.status(201).json(forked);
-// };
-
-// controllers/threadController.js
-
 const forkThread = async (req, res) => {
   try {
     const original = await Thread.findById(req.params.id);
@@ -180,7 +162,6 @@ const forkThread = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 const getTrendingThreads = async (req, res) => {
   try {
@@ -217,8 +198,6 @@ const getTrendingThreads = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch trending threads", error });
   }
 };
-
-
 
 // Update a thread
 const updateThread = async (req, res) => {

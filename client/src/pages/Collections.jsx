@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { createCollection, getCollections } from '../services/api';
+import { Link } from 'react-router-dom';
 
 const Collections = () => {
   const { user } = useAuth();
@@ -38,7 +39,7 @@ const Collections = () => {
       <div className="bg-white p-6 rounded-2xl shadow mt-4">
         <h2 className="text-xl font-semibold mb-2 text-[#2C1D0E]">Collections</h2>
         <p className="text-sm text-[#5E4B3C]">
-          Please{" "}
+          Please{' '}
           <a href="/login" className="text-[#7F5539] hover:underline">log in</a> to view your collections.
         </p>
       </div>
@@ -72,7 +73,7 @@ const Collections = () => {
       {collections.length === 0 ? (
         <p className="text-[#5E4B3C]">No collections found.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           {collections.map((collection) => (
             <li
               key={collection._id}
@@ -82,9 +83,25 @@ const Collections = () => {
               <p className="text-sm text-[#5E4B3C]">
                 Threads: {collection.threads?.length || 0}
               </p>
-              <p className="text-xs text-[#A58D74] mt-1">
+              {/* <p className="text-xs text-[#A58D74] mt-1">
                 Created: {collection.createdAt ? new Date(collection.createdAt).toLocaleDateString() : 'N/A'}
-              </p>
+              </p> */}
+
+              {/* Show Threads Inside Collection */}
+              {collection.threads?.length > 0 && (
+                <ul className="mt-4 space-y-2">
+                  {collection.threads.map((thread) => (
+                    <li key={thread._id}>
+                      <Link
+                        to={`/threads/${thread._id}`}
+                        className="text-[#7F5539] hover:underline text-sm"
+                      >
+                        {thread.title || thread.content?.slice(0, 50) || 'Untitled Thread'}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
