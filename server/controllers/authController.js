@@ -26,9 +26,6 @@ const register = async (req, res) => {
   }
 };
 
-
-
-
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -44,7 +41,60 @@ const login = async (req, res) => {
   }
 };
 
+const followUser = async (req, res) => {
+  const userId = req.user.id;
+  const targetId = req.params.id;
+
+  if (userId === targetId) {
+    return res.status(400).json({ message: "You can't follow yourself." });
+  }
+
+  const user = await User.findById(userId);
+  const targetUser = await User.findById(targetId);
+
+  if (!user || !targetUser) return res.status(404).json({ message: "User not found." });
+
+  if (!user.following.includes(targetId)) {
+    user.following.push(targetId);
+    targetUser.followers.push(userId);
+    await user.save();
+    await targetUser.save();
+  }
+
+  res.status(200).json({ message: "User followed successfully." });
+};
+
+const unfollowUser = async (req, res) => {
+  const userId = req.user.id;
+  const targetId = req.params.id;
+
+  const user = await User.findById(userId);
+  const targetUser = await User.findById(targetId);
+
+  if (!user || !targetUser) return res.status(404).json({ message: "User not found." });
+
+  user.following = user.following.filter(id => id.toString() !== targetId);
+  targetUser.followers = targetUser.followers.filter(id => id.toString() !== userId);
+
+  await user.save();
+  await targetUser.save();
+
+  res.status(200).json({ message: "User unfollowed successfully." });
+};
+
+const getFollowers = async (req, res) => {
+  const user = await User.findById(req.params.id).populate("followers", "name email");
+  if (!user) return res.status(404).json({ message: "User not found." });
+
+  res.json(user.followers);
+};
+
+const getFollowing = async (req, res) => {
+  const user = await User.findById(req.params.id).populate("following", "name email");
+  if (!user) return res.status(404).json({ message: "User not found." });
+
+  res.json(user.following);
+};
 
 
-
-module.exports = { register, login };
+module.exports = { register, login, followUser, unfollowUser, getFollowers, getFollowing };
