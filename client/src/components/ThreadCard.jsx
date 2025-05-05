@@ -106,21 +106,24 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-md border border-[#E5C07B] mb-6">
+    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-md border border-[#E5C07B] mb-6">
+
       {isEditing ? (
         <>
+          
           <input
-            type="text"
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            className="w-full mb-2 border border-[#A7C957] px-2 py-1 rounded bg-white text-[#2C1D0E]"
-          />
-          <textarea
-            rows={3}
-            value={editedSegment}
-            onChange={(e) => setEditedSegment(e.target.value)}
-            className="w-full border border-[#A7C957] px-2 py-1 rounded mb-3 bg-white text-[#2C1D0E]"
-          />
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              className="w-full mb-2 border border-[#A7C957] px-2 py-1 rounded bg-white text-[#2C1D0E] text-sm sm:text-base"
+            />
+            <textarea
+              rows={3}
+              value={editedSegment}
+              onChange={(e) => setEditedSegment(e.target.value)}
+              className="w-full border border-[#A7C957] px-2 py-1 rounded mb-3 bg-white text-[#2C1D0E] text-sm sm:text-base"
+            />
+
           <div className="flex gap-3">
             <button
               onClick={handleSave}
@@ -141,7 +144,9 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
           <h2 className="text-xl font-bold mb-2 capitalize text-[#2C1D0E]">
             {thread.title}
           </h2>
-          <div className="flex items-center gap-3 mb-2">
+          {/* <div className="flex items-center gap-3 mb-2"> */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-2">
+
             <div className="w-10 h-10 bg-[#7F5539] text-white flex items-center justify-center rounded-full font-semibold">
               {thread?.author?.name?.[0]?.toUpperCase() || "U"}
             </div>
@@ -154,9 +159,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
               </p>
             </div>
           </div>
-          {/* <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
-            {thread.segments?.[0]?.content || "No content available."}
-          </blockquote> */}
+    
                   <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
           {thread.segments?.[0]?.content || "No content available."}
         </blockquote>
@@ -190,7 +193,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
 
       {/* Reactions + Fork */}
       {!isEditing && (
-        <div className="mt-4 flex gap-3">
+        <div className="mt-4 flex flex-wrap gap-3 items-center">
           {emojis.map((emoji) => (
             <button
               key={emoji.type}
@@ -215,23 +218,24 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
 
       {/* Collection */}
       {!isEditing && (
-        <div className="mt-4">
-          <label className="text-sm font-medium text-[#2C1D0E]">Add to Collection:</label>
-          <select
-            onChange={(e) => handleAddToCollection(e.target.value)}
-            className="ml-2 border border-[#EDE7DD] rounded px-2 py-1 bg-white text-[#2C1D0E]"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Select Collection
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2">
+        <label className="text-sm font-medium text-[#2C1D0E]">Add to Collection:</label>
+        <select
+          onChange={(e) => handleAddToCollection(e.target.value)}
+          className="border border-[#EDE7DD] rounded px-2 py-1 bg-white text-[#2C1D0E] text-sm"
+          defaultValue=""
+        >
+          <option value="" disabled>
+            Select Collection
+          </option>
+          {collections.map((collection) => (
+            <option key={collection._id} value={collection._id}>
+              {collection.name}
             </option>
-            {collections.map((collection) => (
-              <option key={collection._id} value={collection._id}>
-                {collection.name}
-              </option>
-            ))}
-          </select>
-        </div>
+          ))}
+        </select>
+      </div>
+
       )}
 
       {/* Edit/Delete Buttons */}

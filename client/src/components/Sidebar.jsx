@@ -41,7 +41,7 @@ const Sidebar = () => {
       <div
         className={`${
           isOpen ? 'block' : 'hidden'
-        } md:block w-20 md:w-64 h-full bg-[#FFFDF9] p-4 space-y-6 transition-all duration-300`}
+        } md:block w-20 md:w-64 h-full bg-[#FFFDF9] p-4 space-y-6 transition-all duration-300 rounded-xl shadow-md border border-[#E5C07B] mr-2`}
       >
         <nav className="flex flex-col gap-4 ">
           {navItems.map((item, index) => (
