@@ -64,3 +64,17 @@ export const forkThread = (threadId) =>
 
 export const getThreadById = (threadId) =>
   axios.get(`${API_BASE}/threads/${threadId}`, getAuthHeaders());
+
+// Follow / Unfollow User
+export const followUser = (targetId) =>
+  axios.post(`${API_BASE}/users/follow/${targetId}`, {}, getAuthHeaders());
+
+export const unfollowUser = (targetId) =>
+  axios.post(`${API_BASE}/users/unfollow/${targetId}`, {}, getAuthHeaders());
+
+// Get followers & following
+export const getFollowers = (userId) =>
+  axios.get(`${API_BASE}/users/${userId}/followers`, getAuthHeaders());
+
+export const getFollowing = (userId) =>
+  axios.get(`${API_BASE}/users/${userId}/following`, getAuthHeaders());
