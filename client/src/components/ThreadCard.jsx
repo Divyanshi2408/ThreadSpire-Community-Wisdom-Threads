@@ -151,9 +151,13 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
               {thread?.author?.name?.[0]?.toUpperCase() || "U"}
             </div>
             <div className="text-sm text-[#5E4B3C]">
-              <p className="font-medium text-[#2C1D0E]">
+              {/* <p className="font-medium text-[#2C1D0E]">
                 {thread.author?.name || "Anonymous"}
-              </p>
+              </p> */}
+              <Link to={`/users/${thread.author._id}`} className="font-medium hover:underline">
+                {thread.author.name}
+              </Link>
+
               <p className="text-xs">
                 {moment(thread.createdAt).fromNow()} • {thread.segments?.length || 0} Segments
               </p>

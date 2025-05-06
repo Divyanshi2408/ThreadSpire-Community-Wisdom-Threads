@@ -96,5 +96,17 @@ const getFollowing = async (req, res) => {
   res.json(user.following);
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password"); // Exclude password
+    if (!user) return res.status(404).json({ message: "User not found." });
 
-module.exports = { register, login, followUser, unfollowUser, getFollowers, getFollowing };
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+module.exports = { register, login, followUser, unfollowUser, getFollowers, getFollowing, getUserById };

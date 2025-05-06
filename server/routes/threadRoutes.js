@@ -12,6 +12,7 @@ const {
   getTrendingThreads,
   updateThread,
   deleteThread,
+  getThreadsByUser,
 } = require("../controllers/threadController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -25,5 +26,6 @@ router.route("/trending").get(protect, getTrendingThreads);
 router.route("/:id").put(protect, updateThread);
 router.route("/:id").delete(protect, deleteThread);
 router.route("/:id").get(protect, getThreadById);
+router.get("/user/:id", protect, getThreadsByUser);
 
 module.exports = router;

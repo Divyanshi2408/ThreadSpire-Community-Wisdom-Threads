@@ -13,6 +13,7 @@ import TrendingTopics from "./components/TrendingTopics";
 import TrendingThreadsPage from "./pages/TrendingThreadsPage";
 import TagsLandingPage from "./pages/TagsLandingPage";
 import ThreadDetails from "./pages/ThreadDetails";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
             <Route path="/tag" element={<TagsLandingPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/users/:id" element={<UserProfile />} />
+
           </Routes>
         </main>
 

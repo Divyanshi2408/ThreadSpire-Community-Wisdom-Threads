@@ -1,4 +1,5 @@
 const Collection = require("../models/Collection");
+const mongoose = require("mongoose");
 
 const createCollection = async (req, res) => {
   const { name, threads, isPrivate } = req.body;
