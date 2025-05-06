@@ -215,7 +215,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
             onClick={handleFork}
             className="ml-auto text-sm bg-[#7F5539] text-white px-3 py-1 rounded hover:bg-[#5E4B3C] transition"
           >
-            Remix
+            Repost
           </button>
         </div>
       )}

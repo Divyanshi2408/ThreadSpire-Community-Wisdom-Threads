@@ -152,7 +152,8 @@ const [showFollowing, setShowFollowing] = useState(false);
 
 
             <div className="mt-6">
-            <h3 className="font-semibold mb-2">Threads by {profileUser?.name}</h3>
+            {/* <h3 className="font-semibold mb-2">Threads by {profileUser?.name}</h3> */}
+            <h3 className="font-semibold mb-2">Threads</h3>
             {userThreads.length === 0 ? (
                 <p className="text-sm text-[#5E4B3C]">No threads yet.</p>
             ) : (

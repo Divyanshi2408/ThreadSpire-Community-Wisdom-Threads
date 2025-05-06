@@ -26,7 +26,7 @@ const Profile = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow border border-[#E5C07B] text-[#2C1D0E]">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Your Profile</h2>
+        <h2 className="text-xl font-semibold">My Profile</h2>
         <button
           onClick={logout}
           className="text-sm bg-[#A44A3F] hover:bg-[#91382E] text-white px-4 py-1.5 rounded-lg font-medium"

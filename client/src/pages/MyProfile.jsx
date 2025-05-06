@@ -57,7 +57,7 @@ const MyProfile = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow border border-[#EDE7DD] text-[#2C1D0E]">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Your Profile</h2>
+        <h2 className="text-xl font-semibold">My Profile</h2>
         <button
           onClick={logout}
           className="text-sm bg-[#A44A3F] hover:bg-[#91382E] text-white px-4 py-1.5 rounded-lg font-medium"
@@ -126,7 +126,7 @@ const MyProfile = () => {
         </div>
       </div>
 
-      <h3 className="text-md font-semibold mb-3">Your Threads:</h3>
+      <h3 className="text-md font-semibold mb-3">My Threads:</h3>
       {myThreads.length > 0 ? (
         myThreads.map((thread) => (
           <ThreadCard
