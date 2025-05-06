@@ -247,7 +247,8 @@ const deleteThread = async (req, res) => {
 
 const getThreadsByUser = async (req, res) => {
   try {
-    const threads = await Thread.find({ createdBy: req.params.id }).sort({ createdAt: -1 });
+    const threads = await Thread.find({ author: req.params.id })  // ✅ corrected field
+      .sort({ createdAt: -1 });
     res.json(threads);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

@@ -26,6 +26,6 @@ router.route("/trending").get(protect, getTrendingThreads);
 router.route("/:id").put(protect, updateThread);
 router.route("/:id").delete(protect, deleteThread);
 router.route("/:id").get(protect, getThreadById);
-router.get("/user/:id", protect, getThreadsByUser);
+router.route("/user/:id").get(protect, getThreadsByUser);
 
 module.exports = router;

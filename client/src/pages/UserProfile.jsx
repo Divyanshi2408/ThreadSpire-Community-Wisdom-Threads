@@ -87,6 +87,7 @@ import {
   getFollowers,
   followUser,
   unfollowUser,
+  getFollowing,
   getUserById,
   getUserThreads,
 } from "../services/api";
@@ -99,6 +100,8 @@ const UserProfile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [profileUser, setProfileUser] = useState(null);
   const [userThreads, setUserThreads] = useState([]);
+  const [following, setFollowing] = useState([]);
+
 
   const loadFollowers = async () => {
     try {
@@ -110,6 +113,16 @@ const UserProfile = () => {
     }
   };
 
+  const loadFollowing = async () => {
+    try {
+      const res = await getFollowing(id);
+      setFollowing(res.data);
+    } catch (err) {
+      console.error("Error loading following", err);
+    }
+  };
+
+  
   const loadProfileData = async () => {
     try {
       const [userRes, threadsRes] = await Promise.all([
@@ -126,6 +139,7 @@ const UserProfile = () => {
   useEffect(() => {
     if (user && id) {
       loadFollowers();
+      loadFollowing();
       loadProfileData();
     }
   }, [user, id]);
@@ -174,6 +188,16 @@ const UserProfile = () => {
           ))}
         </ul>
       </div>
+
+      <div className="mt-6">
+        <h3 className="font-semibold mb-2">Following ({following.length})</h3>
+        <ul className="text-sm text-[#5E4B3C] list-disc ml-4">
+            {following.map((followedUser) => (
+            <li key={followedUser._id}>{followedUser.name}</li>
+            ))}
+        </ul>
+        </div>
+
 
       <div className="mt-6">
         <h3 className="font-semibold mb-2">Threads by {profileUser?.name}</h3>
