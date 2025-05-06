@@ -101,6 +101,9 @@ const UserProfile = () => {
   const [profileUser, setProfileUser] = useState(null);
   const [userThreads, setUserThreads] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [showFollowers, setShowFollowers] = useState(false);
+const [showFollowing, setShowFollowing] = useState(false);
+
 
 
   const loadFollowers = async () => {
@@ -167,7 +170,6 @@ const UserProfile = () => {
       <h2 className="text-xl font-semibold mb-2">
         {profileUser?.name || "User Profile"}
       </h2>
-      <p className="text-[#5E4B3C] mb-4">User ID: {id}</p>
 
       <button
         onClick={isFollowing ? handleUnfollow : handleFollow}
@@ -179,24 +181,49 @@ const UserProfile = () => {
       >
         {isFollowing ? "Unfollow" : "Follow"}
       </button>
+      <div className="mt-6 flex flex-col md:flex-row gap-8">
+            {/* Followers Section */}
+            <div className="flex-1">
+                <button
+                onClick={() => setShowFollowers((prev) => !prev)}
+                className="font-semibold mb-2 text-[#7F5539] hover:underline"
+                >
+                Followers ({followers.length})
+                </button>
+                {showFollowers && (
+                <ul className="text-sm text-[#5E4B3C] list-disc ml-4 mt-2">
+                    {followers.map((follower) => (
+                    <li key={follower._id}>
+                        <Link to={`/users/${follower._id}`} className="hover:underline">
+                        {follower.name}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+                )}
+            </div>
 
-      <div className="mt-6">
-        <h3 className="font-semibold mb-2">Followers ({followers.length})</h3>
-        <ul className="text-sm text-[#5E4B3C] list-disc ml-4">
-          {followers.map((follower) => (
-            <li key={follower._id}>{follower.name}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-6">
-        <h3 className="font-semibold mb-2">Following ({following.length})</h3>
-        <ul className="text-sm text-[#5E4B3C] list-disc ml-4">
-            {following.map((followedUser) => (
-            <li key={followedUser._id}>{followedUser.name}</li>
-            ))}
-        </ul>
-        </div>
+            {/* Following Section */}
+            <div className="flex-1">
+                <button
+                onClick={() => setShowFollowing((prev) => !prev)}
+                className="font-semibold mb-2 text-[#7F5539] hover:underline"
+                >
+                Following ({following.length})
+                </button>
+                {showFollowing && (
+                <ul className="text-sm text-[#5E4B3C] list-disc ml-4 mt-2">
+                    {following.map((followedUser) => (
+                    <li key={followedUser._id}>
+                        <Link to={`/users/${followedUser._id}`} className="hover:underline">
+                        {followedUser.name}
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+                )}
+            </div>
+            </div>
 
 
       <div className="mt-6">
