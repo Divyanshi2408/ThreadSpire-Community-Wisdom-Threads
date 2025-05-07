@@ -86,3 +86,8 @@ export const getUserById = (userId) =>
 // Get threads by user
 export const getUserThreads = (userId) =>
   axios.get(`${API_BASE}/threads/user/${userId}`, getAuthHeaders());
+
+export const searchQuery = async (q) => {
+  const res = await axios.get(`/api/search?q=${q}`);
+  return res.data;
+};

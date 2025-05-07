@@ -14,6 +14,7 @@ import TrendingThreadsPage from "./pages/TrendingThreadsPage";
 import TagsLandingPage from "./pages/TagsLandingPage";
 import ThreadDetails from "./pages/ThreadDetails";
 import UserProfile from "./pages/UserProfile";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/users/:id" element={<UserProfile />} />
+            <Route path="/search" element={<SearchResults />} />
 
           </Routes>
         </main>

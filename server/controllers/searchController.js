@@ -6,7 +6,7 @@ const searchAll = async (req, res) => {
     const { q } = req.query;
     if (!q) return res.status(400).json({ message: "Query is required" });
 
-    const regex = new RegExp(q, "i"); // case-insensitive search
+    const regex = new RegExp(q, "i"); // case-insensitive regex
 
     const threads = await Thread.find({ title: regex }).limit(10);
     const users = await User.find({ name: regex }).limit(10);
