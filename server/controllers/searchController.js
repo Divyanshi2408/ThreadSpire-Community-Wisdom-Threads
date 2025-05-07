@@ -1,7 +1,5 @@
-// controllers/searchController.js
-
-const Thread = require("../models/threadModel");
-const User = require("../models/userModel");
+const Thread = require("../models/Thread");
+const User = require("../models/User");
 
 const searchAll = async (req, res) => {
   try {
