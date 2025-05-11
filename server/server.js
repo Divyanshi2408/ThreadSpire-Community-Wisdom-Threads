@@ -10,10 +10,17 @@ const searchRoutes = require("./routes/searchRoutes");
 dotenv.config();
 const app = express();
 
-app.use(cors({
-  origin:  "https://thread-spire-community-wisdom-threads.vercel.app", 
-  credentials: true
-}));
+const corsOptions = {
+  origin: [
+    "https://thread-spire-community-wisdom-threads.vercel.app",
+    "http://localhost:3000"
+  ],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
