@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "https://thread-spire-community-wisdom-threads.vercel.app/api";
+const API_BASE = "https://threadspire-community-wisdom-threads.onrender.com/api";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
