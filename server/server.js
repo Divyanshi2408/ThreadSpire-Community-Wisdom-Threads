@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://thread-spire-community-wisdom-threads-snml.vercel.app/", 
+  origin:  "https://thread-spire-community-wisdom-threads.vercel.app", 
   credentials: true
 }));
 app.use(express.json());
