@@ -92,3 +92,6 @@ export const searchQuery = async (q) => {
   const res = await axios.get(`/api/search?q=${q}`);
   return res.data;
 };
+
+export const addCommentToThread = (threadId, commentData) =>
+  axios.post(`${API_BASE}/threads/${threadId}/comments`, commentData, getAuthHeaders());

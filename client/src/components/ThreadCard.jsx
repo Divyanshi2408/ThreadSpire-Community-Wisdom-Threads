@@ -8,6 +8,7 @@ import {
   deleteThread,
   updateThread,
   forkThread,
+  addCommentToThread,
 } from "../services/api";
 
 const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
@@ -17,6 +18,9 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(thread.title);
   const [showAllSegments, setShowAllSegments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [isCommenting, setIsCommenting] = useState(false);
+
 
   const [editedSegment, setEditedSegment] = useState(thread.segments?.[0]?.content || "");
 
@@ -106,6 +110,22 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
       alert("Failed to fork thread.");
     }
   };
+
+  const handleAddComment = async () => {
+  if (!commentText.trim()) return alert("Comment cannot be empty.");
+
+  try {
+    await addCommentToThread(thread._id, { content: commentText });
+    alert("Comment added!");
+    setCommentText("");
+    setIsCommenting(false);
+    // Optionally notify parent to refetch or update comments if displayed
+  } catch (err) {
+    console.error("Failed to add comment:", err);
+    alert("Failed to add comment.");
+  }
+};
+
 
   return (
     <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-md border border-[#E5C07B] mb-6">
@@ -282,6 +302,47 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
           </button>
         </div>
       )}
+      {/* Add Comment Section */}
+{!isEditing && (
+  <div className="mt-6">
+    {!isCommenting ? (
+      <button
+        onClick={() => setIsCommenting(true)}
+        className="text-sm text-[#7F5539] underline hover:text-[#5E4B3C]"
+      >
+        Add a comment
+      </button>
+    ) : (
+      <div className="flex flex-col gap-2">
+        <textarea
+          rows={2}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="Write your comment..."
+          className="w-full border border-[#EDE7DD] rounded px-3 py-2 text-sm text-[#2C1D0E]"
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={handleAddComment}
+            className="bg-[#7F5539] text-white px-3 py-1 text-sm rounded hover:bg-[#5E4B3C] transition"
+          >
+            Post
+          </button>
+          <button
+            onClick={() => {
+              setIsCommenting(false);
+              setCommentText("");
+            }}
+            className="text-sm text-[#5E4B3C] hover:underline"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+)}
+
     </div>
   );
 };
