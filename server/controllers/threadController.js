@@ -199,7 +199,6 @@ const getTrendingThreads = async (req, res) => {
   }
 };
 
-// Update a thread
 const updateThread = async (req, res) => {
   const { id } = req.params;
   const { title, tags, segments } = req.body;
@@ -225,7 +224,6 @@ const updateThread = async (req, res) => {
   }
 };
 
-// Delete a thread
 const deleteThread = async (req, res) => {
   const { id } = req.params;
 
