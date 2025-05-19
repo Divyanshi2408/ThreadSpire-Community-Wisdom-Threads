@@ -287,7 +287,8 @@ const addCommentToThread = async (req, res) => {
 
 const getThreadComments = async (req, res) => {
   try {
-    const thread = await Thread.findById(req.params.id);
+    const thread = await Thread.findById(req.params.id)
+      .populate("comments.author", "name email");
 
     if (!thread) {
       return res.status(404).json({ message: "Thread not found" });
@@ -299,5 +300,6 @@ const getThreadComments = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
 
 module.exports = { createThread, getThreads, getMyThreads,getThreadById , getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread, getThreadsByUser, addCommentToThread, getThreadComments };

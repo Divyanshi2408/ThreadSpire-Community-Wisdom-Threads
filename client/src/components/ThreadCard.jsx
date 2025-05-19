@@ -324,51 +324,58 @@ const handleAddComment = async () => {
         onClick={() => setIsCommenting(true)}
         className="text-sm text-[#7F5539] underline hover:text-[#5E4B3C]"
       >
-        Add a comment
+        Comments
       </button>
     ) : (
-      <div className="flex flex-col gap-2">
-        <textarea
-          rows={2}
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Write your comment..."
-          className="w-full border border-[#EDE7DD] rounded px-3 py-2 text-sm text-[#2C1D0E]"
-        />
-        <div className="flex gap-2">
-          <button
-            onClick={handleAddComment}
-            className="bg-[#7F5539] text-white px-3 py-1 text-sm rounded hover:bg-[#5E4B3C] transition"
-          >
-            Post
-          </button>
-          <button
-            onClick={() => {
-              setIsCommenting(false);
-              setCommentText("");
-            }}
-            className="text-sm text-[#5E4B3C] hover:underline"
-          >
-            Cancel
-          </button>
+      <>
+        {/* Comment input form */}
+        <div className="flex flex-col gap-2 mb-4">
+          <textarea
+            rows={2}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Write your comment..."
+            className="w-full border border-[#EDE7DD] rounded px-3 py-2 text-sm text-[#2C1D0E]"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddComment}
+              className="bg-[#7F5539] text-white px-3 py-1 text-sm rounded hover:bg-[#5E4B3C] transition"
+            >
+              Post
+            </button>
+            <button
+              onClick={() => {
+                setIsCommenting(false);
+                setCommentText("");
+              }}
+              className="text-sm text-[#5E4B3C] hover:underline"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      </div>
+
+        {/* Comments list */}
+        {comments.length > 0 && (
+          <div className="border-t border-[#EDE7DD] pt-4">
+            <h4 className="text-sm font-semibold text-[#2C1D0E] mb-2">Comments</h4>
+            {comments.map((comment, index) => (
+              <div key={index} className="mb-2">
+                <p className="text-sm text-[#2C1D0E]">{comment.content}</p>
+                <p className="text-xs text-[#5E4B3C] italic">
+                  — {comment.author?.name || "Anonymous"}, {moment(comment.createdAt).fromNow()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
     )}
   </div>
 )}
-{comments.length > 0 && (
-  <div className="mt-6 border-t border-[#EDE7DD] pt-4">
-    <h4 className="text-sm font-semibold text-[#2C1D0E] mb-2">Comments</h4>
-    {comments.map((comment, index) => (
-      <div key={index} className="mb-2">
-        <p className="text-sm text-[#2C1D0E]">{comment.content}</p>
-        <p className="text-xs text-[#5E4B3C] italic">
-          — {comment.author?.name || "Anonymous"}, {moment(comment.createdAt).fromNow()}
-        </p>
-      </div>
-    ))}
-  </div>
-)}
+
+
 
     </div>
   );
