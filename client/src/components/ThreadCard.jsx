@@ -9,6 +9,7 @@ import {
   updateThread,
   forkThread,
   addCommentToThread,
+  getThreadComments 
 } from "../services/api";
 
 const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
@@ -20,6 +21,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
   const [showAllSegments, setShowAllSegments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [isCommenting, setIsCommenting] = useState(false);
+  const [comments, setComments] = useState([]);
 
 
   const [editedSegment, setEditedSegment] = useState(thread.segments?.[0]?.content || "");
@@ -33,23 +35,31 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
     { type: "rocket", icon: "🚀" },
     { type: "clap", icon: "👏" },
   ];
+useEffect(() => {
+  const fetchCollections = async () => {
+    try {
+      const res = await getCollections();
+      setCollections(res.data);
+    } catch (err) {
+      console.error("Error fetching collections:", err);
+    }
+  };
 
-  
+  const fetchComments = async () => {
+    try {
+      const res = await getThreadComments(thread._id);
+      setComments(res.data);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  };
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const res = await getCollections();
-        setCollections(res.data);
-      } catch (err) {
-        console.error("Error fetching collections:", err);
-      }
-    };
+  fetchCollections();
+  fetchComments();
+  setReactions(thread.reactions || {});
+  setUserReaction(thread.userReaction || null);
+}, [thread]);
 
-    fetchCollections();
-    setReactions(thread.reactions || {});
-    setUserReaction(thread.userReaction || null);
-  }, [thread]);
 
   const handleAddToCollection = async (collectionId) => {
     try {
@@ -111,7 +121,7 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
     }
   };
 
-  const handleAddComment = async () => {
+const handleAddComment = async () => {
   if (!commentText.trim()) return alert("Comment cannot be empty.");
 
   try {
@@ -119,12 +129,16 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
     alert("Comment added!");
     setCommentText("");
     setIsCommenting(false);
-    // Optionally notify parent to refetch or update comments if displayed
+
+    // Refresh comments
+    const res = await getThreadComments(thread._id);
+    setComments(res.data);
   } catch (err) {
     console.error("Failed to add comment:", err);
     alert("Failed to add comment.");
   }
 };
+
 
 
   return (
@@ -340,6 +354,19 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
         </div>
       </div>
     )}
+  </div>
+)}
+{comments.length > 0 && (
+  <div className="mt-6 border-t border-[#EDE7DD] pt-4">
+    <h4 className="text-sm font-semibold text-[#2C1D0E] mb-2">Comments</h4>
+    {comments.map((comment, index) => (
+      <div key={index} className="mb-2">
+        <p className="text-sm text-[#2C1D0E]">{comment.content}</p>
+        <p className="text-xs text-[#5E4B3C] italic">
+          — {comment.author?.name || "Anonymous"}, {moment(comment.createdAt).fromNow()}
+        </p>
+      </div>
+    ))}
   </div>
 )}
 
