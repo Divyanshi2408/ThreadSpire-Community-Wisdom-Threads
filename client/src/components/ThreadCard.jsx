@@ -16,6 +16,8 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
   const [userReaction, setUserReaction] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(thread.title);
+  const [showAllSegments, setShowAllSegments] = useState(false);
+
   const [editedSegment, setEditedSegment] = useState(thread.segments?.[0]?.content || "");
 
   const isOwner = currentUser?._id === thread?.author?._id;
@@ -163,10 +165,31 @@ const ThreadCard = ({ thread, currentUser, onThreadUpdate }) => {
               </p>
             </div>
           </div>
-    
-                  <blockquote className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic">
-          {thread.segments?.[0]?.content || "No content available."}
-        </blockquote>
+          {thread.segments && thread.segments.length > 0 ? (
+            <>
+              {(showAllSegments ? thread.segments : [thread.segments[0]]).map((segment, index) => (
+                <blockquote
+                  key={index}
+                  className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic mb-2"
+                >
+                  {segment.content}
+                </blockquote>
+              ))}
+
+              {thread.segments.length > 1 && (
+                <button
+                  onClick={() => setShowAllSegments(!showAllSegments)}
+                  className="text-sm text-[#7F5539] underline hover:text-[#5E4B3C] transition"
+                >
+                  {showAllSegments ? "Show Less" : "Read More"}
+                </button>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-[#5E4B3C] italic">No content available.</p>
+          )}
+
+
 
         {thread.forkedFrom && (
           <div className="mt-2 text-sm text-[#5E4B3C] italic">
