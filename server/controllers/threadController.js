@@ -43,9 +43,11 @@ const getMyThreads = async (req, res) => {
 
 const getThreadById = async (req, res) => {
   try {
-    const thread = await Thread.findById(req.params.id)
-      .populate("author", "name email")
-      .populate("forkedFrom", "title");
+   const thread = await Thread.findById(req.params.id)
+  .populate("author", "name email")
+  .populate("forkedFrom", "title")
+  .populate("comments.author", "name email"); 
+
 
     if (!thread) return res.status(404).json({ message: "Thread not found" });
 
@@ -252,5 +254,36 @@ const getThreadsByUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const addCommentToThread = async (req, res) => {
+  const { id } = req.params; // thread ID
+  const { content } = req.body;
 
-module.exports = { createThread, getThreads, getMyThreads,getThreadById , getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread, getThreadsByUser };
+  if (!content || typeof content !== "string") {
+    return res.status(400).json({ message: "Comment content is required" });
+  }
+
+  try {
+    const thread = await Thread.findById(id);
+    if (!thread) return res.status(404).json({ message: "Thread not found" });
+
+    const newComment = {
+      author: req.user._id,
+      content,
+    };
+
+    thread.comments.push(newComment);
+    await thread.save();
+
+    const updatedThread = await Thread.findById(id)
+      .populate("author", "name email")
+      .populate("comments.author", "name email"); 
+
+    res.status(201).json(updatedThread);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+module.exports = { createThread, getThreads, getMyThreads,getThreadById , getThreadsByTag, getAllTagsWithCount, reactThread, forkThread, getTrendingThreads,updateThread,deleteThread, getThreadsByUser, addCommentToThread };
