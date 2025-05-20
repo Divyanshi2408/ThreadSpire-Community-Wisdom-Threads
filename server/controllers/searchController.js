@@ -6,21 +6,25 @@ const searchAll = async (req, res) => {
     const { q } = req.query;
     if (!q) return res.status(400).json({ message: "Query is required" });
 
-    const regex = new RegExp(q, "i"); 
+    const regex = new RegExp(q, "i"); // case-insensitive
+    console.log("🔍 Search query regex:", regex);
 
-    const threads = await Thread.find({ title: regex }).limit(10);
-    const users = await User.find({ name: regex }).limit(10);
+    const threads = await Thread.find({ title: regex });
+    const users = await User.find({ name: regex });
 
-    const results = [
-      ...threads.map((t) => ({ ...t._doc, type: "thread" })),
-      ...users.map((u) => ({ ...u._doc, type: "user" })),
-    ];
+    console.log("🧵 Matched threads:", threads);
+    console.log("👤 Matched users:", users);
 
-    res.json(results);
+    res.json({
+      threads: threads.map((t) => ({ ...t._doc, type: "thread" })),
+      users: users.map((u) => ({ ...u._doc, type: "user" })),
+    });
   } catch (error) {
     console.error("Search error:", error);
     res.status(500).json({ message: "Search failed" });
   }
 };
+
+
 
 module.exports = { searchAll };
