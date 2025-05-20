@@ -22,10 +22,9 @@ function App() {
       <Navbar />
 
       <div className="flex flex-1 overflow-hidden ">
-      <div className="mb-2 bg-white p-4 rounded-xl shadow-sm m-4">
-      <Sidebar />
-          </div>
-       
+      <div className="hidden lg:block lg:mb-2 lg:bg-white lg:p-4 lg:rounded-xl lg:shadow-sm lg:m-4">
+        <Sidebar />
+      </div>
 
         <main className="flex-1 overflow-y-auto p-6 bg-white shadow-inner rounded-tl-3xl border-l border-[#EDE7DD] m-4">
           <Routes>
