@@ -187,12 +187,11 @@ const handleAddComment = async () => {
               {thread?.author?.name?.[0]?.toUpperCase() || "U"}
             </div>
             <div className="text-sm text-[#5E4B3C]">
-              {/* <p className="font-medium text-[#2C1D0E]">
-                {thread.author?.name || "Anonymous"}
-              </p> */}
-              <Link to={`/users/${thread.author._id}`} className="font-medium hover:underline">
-                {thread.author.name}
-              </Link>
+             
+             <Link to={`/users/${thread.author?._id}`} className="font-medium hover:underline">
+              {thread.author?.name || "Anonymous"}
+            </Link>
+
 
               <p className="text-xs">
                 {moment(thread.createdAt).fromNow()} • {thread.segments?.length || 0} Segments
@@ -366,6 +365,7 @@ const handleAddComment = async () => {
                 <p className="text-xs text-[#5E4B3C] italic">
                   — {comment.author?.name || "Anonymous"}, {moment(comment.createdAt).fromNow()}
                 </p>
+                
               </div>
             ))}
           </div>

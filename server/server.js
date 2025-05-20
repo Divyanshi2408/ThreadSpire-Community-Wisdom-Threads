@@ -11,13 +11,13 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: [
-    "https://thread-spire-community-wisdom-threads.vercel.app",
-    "http://localhost:3000"
-  ],
   // origin: [
-  //   "http://localhost:5173"
+  //   "https://thread-spire-community-wisdom-threads.vercel.app",
+  //   "http://localhost:3000"
   // ],
+  origin: [
+    "http://localhost:5173"
+  ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
