@@ -60,14 +60,14 @@ cd lms-project
 ```
 cd server
 npm install
-npm run dev
+node server.js
 ```
 
 ### 3. Install Client Dependencies
 ```
 cd ../client
 npm install
-npm start
+npm run dev
 ```
 
 ## 💬 Contact
