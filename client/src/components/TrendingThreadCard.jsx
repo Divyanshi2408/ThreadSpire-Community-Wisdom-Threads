@@ -5,12 +5,24 @@ import {
   getCollections,
   addThreadToCollection,
   reactToThread,
+   forkThread,
+  addCommentToThread,
+  getThreadComments 
 } from "../services/api";
 
-const TrendingThreadCard = ({ thread, index }) => {
+const TrendingThreadCard = ({ thread,currentUser, index }) => {
   const [collections, setCollections] = useState([]);
   const [reactions, setReactions] = useState({});
   const [userReaction, setUserReaction] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showAllSegments, setShowAllSegments] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const [isCommenting, setIsCommenting] = useState(false);
+  const [comments, setComments] = useState([]);
+  
+  const [editedSegment, setEditedSegment] = useState(thread.segments?.[0]?.content || "");
+
+  const isOwner = currentUser?._id === thread?.author?._id;
 
   const emojis = [
     { type: "brain", icon: "🧠" },
@@ -20,20 +32,31 @@ const TrendingThreadCard = ({ thread, index }) => {
     { type: "clap", icon: "👏" },
   ];
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const res = await getCollections();
-        setCollections(res.data);
-      } catch (err) {
-        console.error("Error fetching collections:", err);
-      }
-    };
+useEffect(() => {
+  const fetchCollections = async () => {
+    try {
+      const res = await getCollections();
+      setCollections(res.data);
+    } catch (err) {
+      console.error("Error fetching collections:", err);
+    }
+  };
 
-    fetchCollections();
-    setReactions(thread.reactions || {});
-    setUserReaction(thread.userReaction || null);
-  }, [thread]);
+  const fetchComments = async () => {
+    try {
+      const res = await getThreadComments(thread._id);
+      setComments(res.data);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  };
+
+  fetchCollections();
+  fetchComments();
+  setReactions(thread.reactions || {});
+  setUserReaction(thread.userReaction || null);
+}, [thread]);
+  
 
   const handleAddToCollection = async (collectionId) => {
     try {
@@ -55,6 +78,33 @@ const TrendingThreadCard = ({ thread, index }) => {
       alert("Reaction failed");
     }
   };
+    const handleFork = async () => {
+    try {
+      const res = await forkThread(thread._id);
+      alert("Thread forked successfully!");
+      // You could optionally redirect to the new thread here
+    } catch (err) {
+      console.error("Fork failed:", err.response?.data || err.message);
+      alert("Failed to fork thread.");
+    }
+  };
+
+const handleAddComment = async () => {
+  if (!commentText.trim()) return alert("Comment cannot be empty.");
+
+  try {
+    await addCommentToThread(thread._id, { content: commentText });
+    alert("Comment added!");
+    setCommentText("");
+    setIsCommenting(false);
+
+    const res = await getThreadComments(thread._id);
+    setComments(res.data);
+  } catch (err) {
+    console.error("Failed to add comment:", err);
+    alert("Failed to add comment.");
+  }
+};
 
   return (
     <div className="bg-[#FFFDF9] border border-[#E5C07B] rounded-2xl p-6 shadow-sm mb-6">
@@ -81,10 +131,63 @@ const TrendingThreadCard = ({ thread, index }) => {
           </p>
         </div>
       </div>
+   {thread.segments && thread.segments.length > 0 ? (
+            <>
+              {(showAllSegments ? thread.segments : [thread.segments[0]]).map((segment, index) => (
+                <blockquote
+                  key={index}
+                  className="border-l-4 border-[#A7C957] pl-4 text-[#5E4B3C] italic mb-2"
+                >
+                  {segment.content}
+                </blockquote>
+              ))}
 
-      <blockquote className="border-l-4 border-[#D97706] pl-4 text-[#5E4B3C] italic">
-        {thread.segments?.[0]?.content || "No content available."}
-      </blockquote>
+              {thread.segments.length > 1 && (
+                <button
+                  onClick={() => setShowAllSegments(!showAllSegments)}
+                  className="text-sm text-[#7F5539] underline hover:text-[#5E4B3C] transition"
+                >
+                  {showAllSegments ? "Show Less" : "Read More"}
+                </button>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-[#5E4B3C] italic">No content available.</p>
+          )}
+
+           {thread.forkedFrom && (
+          <div className="mt-2 text-sm text-[#5E4B3C] italic">
+            Forked from:{" "}
+            <Link to={`/threads/${thread.forkedFrom._id}`} className="underline text-[#7F5539]">
+              {thread.forkedFrom.title || "Original Thread"}
+            </Link>
+          </div>
+        )}
+
+          {/* Reactions + Fork */}
+      {!isEditing && (
+        <div className="mt-4 flex flex-wrap gap-3 items-center">
+          {emojis.map((emoji) => (
+            <button
+              key={emoji.type}
+              onClick={() => handleReaction(emoji.type)}
+              className={`text-xl transition-transform hover:scale-125 ${
+                userReaction === emoji.type ? "opacity-100" : "opacity-50"
+              }`}
+            >
+              {emoji.icon} {reactions?.[emoji.type] || 0}
+            </button>
+          ))}
+
+          {/* Remix / Fork Button */}
+          <button
+            onClick={handleFork}
+            className="ml-auto text-sm bg-[#7F5539] text-white px-3 py-1 rounded hover:bg-[#5E4B3C] transition"
+          >
+            Repost
+          </button>
+        </div>
+      )}
 
       <div className="mt-2">
         {thread.tags && thread.tags.length > 0 && (
@@ -134,6 +237,64 @@ const TrendingThreadCard = ({ thread, index }) => {
           ))}
         </select>
       </div>
+      {!isEditing && (
+  <div className="mt-6">
+    {!isCommenting ? (
+      <button
+        onClick={() => setIsCommenting(true)}
+        className="text-sm text-[#7F5539] underline hover:text-[#5E4B3C]"
+      >
+        Comments
+      </button>
+    ) : (
+      <>
+        {/* Comment input form */}
+        <div className="flex flex-col gap-2 mb-4">
+          <textarea
+            rows={2}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Write your comment..."
+            className="w-full border border-[#EDE7DD] rounded px-3 py-2 text-sm text-[#2C1D0E]"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddComment}
+              className="bg-[#7F5539] text-white px-3 py-1 text-sm rounded hover:bg-[#5E4B3C] transition"
+            >
+              Post
+            </button>
+            <button
+              onClick={() => {
+                setIsCommenting(false);
+                setCommentText("");
+              }}
+              className="text-sm text-[#5E4B3C] hover:underline"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        {/* Comments list */}
+        {comments.length > 0 && (
+          <div className="border-t border-[#EDE7DD] pt-4">
+            <h4 className="text-sm font-semibold text-[#2C1D0E] mb-2">Comments</h4>
+            {comments.map((comment, index) => (
+              <div key={index} className="mb-2">
+                <p className="text-sm text-[#2C1D0E]">{comment.content}</p>
+                <p className="text-xs text-[#5E4B3C] italic">
+                  — {comment.author?.name || "Anonymous"}, {moment(comment.createdAt).fromNow()}
+                </p>
+                
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    )}
+  </div>
+)}
     </div>
   );
 };
