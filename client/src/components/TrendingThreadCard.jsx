@@ -204,19 +204,6 @@ const handleAddComment = async () => {
         )}
       </div>
 
-      <div className="mt-4 flex gap-3">
-        {emojis.map((emoji) => (
-          <button
-            key={emoji.type}
-            onClick={() => handleReaction(emoji.type)}
-            className={`text-xl transition-transform hover:scale-125 ${
-              userReaction === emoji.type ? "opacity-100" : "opacity-50"
-            }`}
-          >
-            {emoji.icon} {reactions?.[emoji.type] || 0}
-          </button>
-        ))}
-      </div>
 
       <div className="mt-4">
         <label className="text-sm font-medium text-[#2C1D0E]">
