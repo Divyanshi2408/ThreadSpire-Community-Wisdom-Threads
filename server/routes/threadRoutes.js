@@ -20,15 +20,15 @@ const { protect } = require("../middlewares/authMiddleware");
 
 router.route("/").get(getThreads).post(protect, createThread);
 router.route("/mine").get(protect, getMyThreads);
-router.route("/tags/:tagName").get(protect, getThreadsByTag);
-router.route("/tags").get(protect, getAllTagsWithCount);
+router.route("/tags/:tagName").get(getThreadsByTag);
+router.route("/tags").get(getAllTagsWithCount);
 router.route("/:id/react").post(protect, reactThread);
 router.route("/:id/comments")
   .get(getThreadComments)
   .post(protect, addCommentToThread);
 
 router.route("/:id/fork").post(protect, forkThread);
-router.route("/trending").get(protect, getTrendingThreads);
+router.route("/trending").get(getTrendingThreads);
 router.route("/:id").put(protect, updateThread);
 router.route("/:id").delete(protect, deleteThread);
 router.route("/:id").get(protect, getThreadById);
