@@ -83,6 +83,7 @@ const Navbar = () => {
             <Link to="/trending" onClick={() => setMenuOpen(false)} className="hover:text-[#7F5539]">Trending</Link>
             <Link to="/tag" onClick={() => setMenuOpen(false)} className="hover:text-[#7F5539]">Tags</Link>
             <Link to="/collections" onClick={() => setMenuOpen(false)} className="hover:text-[#7F5539]">Collections</Link>
+            <Link to="/MyProfile" className="hover:text-[#7F5539]">Profile</Link>
           </div>
           <div className="flex justify-between items-center mt-4">
             <BsBell className="text-xl text-[#5E4B3C] cursor-pointer" />
