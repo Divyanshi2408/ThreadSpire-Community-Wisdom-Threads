@@ -31,6 +31,7 @@ const Navbar = () => {
         <Link to="/trending" className="hover:text-[#7F5539]">Trending</Link>
         <Link to="/tag" className="hover:text-[#7F5539]">Tags</Link>
         <Link to="/collections" className="hover:text-[#7F5539]">Collections</Link>
+        <Link to="/MyProfile" className="hover:text-[#7F5539]">Profile</Link>
       </div>
 
       {/* Desktop Search Bar */}
